@@ -7,38 +7,35 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TestObject {
-    private final WebDriver webDriver;
+    public WebDriver getWebDriver() {
+        return webDriver;
+    }
+
+    private WebDriver webDriver;
     public static final String TEST_RESOURCES_DIR = "src\\test\\resources\\";
     public static final String DOWNLOAD_DIR = TEST_RESOURCES_DIR.concat("download\\");
     @BeforeSuite
-    protected final void setupTestSuite() throws IOException {
+    protected final void setupTestSuite() {
 
         WebDriverManager.chromedriver().setup();
     }
 
-    public TestObject() {
+    @BeforeMethod
+    protected void setUpTest() {
         this.webDriver = new ChromeDriver(configChromeOptions());
         this.webDriver.manage().window().maximize();
     }
-
-    @BeforeMethod
-    protected final void setUpTest() {
-
-    }
     @AfterMethod
     protected final void tearDownTest(ITestResult testResult) {
-
         quitDriver();
     }
     @AfterSuite
-    public void deleteDownloadFiles() throws IOException {
-
-
+    public void deleteDownloadFiles() {
+        quitDriver();
     }
 
     private void quitDriver() {
