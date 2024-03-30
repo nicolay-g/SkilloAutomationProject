@@ -12,23 +12,22 @@ import java.time.Duration;
 
 public class LoginPage extends AuthForm {
 
+    private WebDriver webDriver;
 
-    protected WebDriver webDriver;
-
-    protected WebDriverWait wait;
+    private WebDriverWait wait;
 
     public static final String LOGIN_PAGE_URL = "http://training.skillo-bg.com:4200/users/login";
 
     @FindBy(id = "defaultLoginFormUsername")
-    WebElement loginUsernameInput;
+    private WebElement loginUsernameInput;
     @FindBy(id = "defaultLoginFormPassword")
-    WebElement loginPasswordInput;
+    private WebElement loginPasswordInput;
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
 
-        PageFactory.initElements(webDriver, this);
+        PageFactory.initElements(this.webDriver, this);
     }
 
     @Override

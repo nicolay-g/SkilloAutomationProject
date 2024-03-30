@@ -1,5 +1,7 @@
 package ui_tests;
 
+import factory.HeaderLoggedIn;
+import factory.HeaderLoggedOut;
 import factory.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -23,12 +25,19 @@ public class SkilloSiteTests extends TestObject {
     public void loginTest(String username, String password, String userId){
         WebDriver webDriver = super.getWebDriver();
         LoginPage loginPage = new LoginPage(webDriver);
+        HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
+        HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
 
-        loginPage.navigateTo();
+        headerLoggedOut.clickOnLoginLink();
         Assert.assertTrue(loginPage.isUrlLoaded(), "The login page is not opened");
 
         loginPage.setUsername(username);
         loginPage.setPassword(password);
         loginPage.clickOnSignInButton();
+
+        //TODO: Add assertion if we are logged in - the url is the one for the posts
+
+        headerLoggedIn.clickOnSignOutButton();
+        Assert.assertTrue(loginPage.isUrlLoaded(), "The login page is not opened");
     }
 }

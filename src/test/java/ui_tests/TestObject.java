@@ -11,13 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TestObject {
+    public static final String HOME_URL = "http://training.skillo-bg.com:4200/posts/all";
+    public static final String TEST_RESOURCES_DIR = "src\\test\\resources\\";
+    public static final String DOWNLOAD_DIR = TEST_RESOURCES_DIR.concat("download\\");
     public WebDriver getWebDriver() {
         return webDriver;
     }
-
     private WebDriver webDriver;
-    public static final String TEST_RESOURCES_DIR = "src\\test\\resources\\";
-    public static final String DOWNLOAD_DIR = TEST_RESOURCES_DIR.concat("download\\");
     @BeforeSuite
     protected final void setupTestSuite() {
 
@@ -28,6 +28,7 @@ public class TestObject {
     protected void setUpTest() {
         this.webDriver = new ChromeDriver(configChromeOptions());
         this.webDriver.manage().window().maximize();
+        this.webDriver.get(HOME_URL);
     }
     @AfterMethod
     protected final void tearDownTest(ITestResult testResult) {
