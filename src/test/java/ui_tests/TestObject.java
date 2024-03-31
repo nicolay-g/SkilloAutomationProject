@@ -90,7 +90,7 @@ public class TestObject {
             FileUtils.cleanDirectory(directory);
             System.out.printf("All files are deleted in Directory: %s%n", directoryPath);
         } catch (IOException exception) {
-                System.out.printf("Unable to delete the files in Directory: %s%n", directoryPath);
+            System.out.printf("Unable to delete the files in Directory: %s%n", directoryPath);
         }
     }
 }
