@@ -10,7 +10,7 @@
     <option name="GROUP_NAME" value="" />
     <option name="TEST_OBJECT" value="CLASS" />
     <option name="PARAMETERS" value="" />
-    <option name="OUTPUT_DIRECTORY" value="\scr\test\resources\reports" />
+    <option name="OUTPUT_DIRECTORY" value="src\test\resources\reports" />
     <option name="TEST_SEARCH_SCOPE">
       <value defaultName="moduleWithDependencies" />
     </option>

@@ -31,6 +31,7 @@
                         <suiteXmlFiles>
                             <suiteXmlFile>testng.xml</suiteXmlFile>
                         </suiteXmlFiles>
+                        <reportsDirectory>${project.build.directory}/../src/test/resources/reports</reportsDirectory>
                     </configuration>
                 </plugin>
             </plugins>
