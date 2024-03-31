@@ -78,7 +78,7 @@ public class TestObject {
                 File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
                 FileUtils.copyFile(screenshot, new File(SCREENSHOTS_DIR.concat(testName).concat(".png")));
             } catch (IOException exception) {
-                System.out.println("Unable to create a screenshot file for test " + testName + ". Error message: " +
+                System.out.println("Unable to create a screenshot file for test " + testName + ".Error message: " +
                         exception.getMessage());
             }
         }
