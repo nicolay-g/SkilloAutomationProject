@@ -22,6 +22,10 @@ public class LoginPage extends AuthForm {
     private WebElement loginUsernameInput;
     @FindBy(id = "defaultLoginFormPassword")
     private WebElement loginPasswordInput;
+    @FindBy(xpath = "//input[@formcontrolname='rememberMe']")
+    private WebElement rememberMeCheckbox;
+    @FindBy(xpath = "//a[@href='/users/register']")
+    private WebElement registerLink;
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -43,17 +47,50 @@ public class LoginPage extends AuthForm {
         setInputValue(loginUsernameInput, value);
     }
 
+    public String getUsernameInputValue() {
+        wait.until(ExpectedConditions.visibilityOf(loginUsernameInput));
+        return loginUsernameInput.getAttribute("value");
+    }
+
+    public String getPasswordInputValue() {
+        wait.until(ExpectedConditions.visibilityOf(loginPasswordInput));
+        return loginPasswordInput.getAttribute("value");
+    }
+
     public void clickOnSignInButton() {
         wait.until(ExpectedConditions.visibilityOf(signInButton));
         signInButton.click();
     }
 
-    private void setInputValue(WebElement inputElement, String value) {
-        wait.until(ExpectedConditions.visibilityOf(inputElement));
-        inputElement.sendKeys(value);
+    public void clickOnRegisterLink() {
+        wait.until(ExpectedConditions.visibilityOf(registerLink));
+        registerLink.click();
     }
 
     public void navigateTo() {
         this.webDriver.get(LOGIN_PAGE_URL);
+    }
+
+    public void selectRememberMeCheckbox() {
+        wait.until(ExpectedConditions.visibilityOf(rememberMeCheckbox));
+        if (!rememberMeCheckbox.isSelected()) {
+            rememberMeCheckbox.click();
+        }
+    }
+
+    public void deSelectRememberMeCheckbox() {
+        wait.until(ExpectedConditions.visibilityOf(rememberMeCheckbox));
+        if (rememberMeCheckbox.isSelected()) {
+            rememberMeCheckbox.click();
+        }
+    }
+
+    public boolean isRememberMeCheckboxSelected() {
+        return rememberMeCheckbox.isSelected();
+    }
+
+    private void setInputValue(WebElement inputElement, String value) {
+        wait.until(ExpectedConditions.visibilityOf(inputElement));
+        inputElement.sendKeys(value);
     }
 }
