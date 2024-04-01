@@ -16,7 +16,8 @@ public class SkilloSiteTests extends TestObject {
     @DataProvider(name="getUser")
     public Object[][] getUser(){
         return new Object[][]{
-                {"n@g.com","n@g.com", "5540"},
+                {"n@g.con","n@g.con", "5631"},
+                {"n@g.co","n@g.co", "5632"},
         };
     }
     @Test(dataProvider = "getUser")
