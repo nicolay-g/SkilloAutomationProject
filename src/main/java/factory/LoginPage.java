@@ -35,7 +35,7 @@ public class LoginPage extends AuthForm {
     }
 
     @Override
-    public boolean isUrlLoaded() {
+    public boolean isPageLoaded() {
         return wait.until(ExpectedConditions.urlToBe(LOGIN_PAGE_URL));
     }
 

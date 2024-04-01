@@ -8,5 +8,5 @@ public abstract class AuthForm {
     @FindBy(id="sign-in-button")
     protected WebElement signInButton;
 
-    public abstract boolean isUrlLoaded();
+    public abstract boolean isPageLoaded();
 }

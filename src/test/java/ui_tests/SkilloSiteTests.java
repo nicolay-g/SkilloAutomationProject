@@ -1,8 +1,6 @@
 package ui_tests;
 
-import factory.HeaderLoggedIn;
-import factory.HeaderLoggedOut;
-import factory.LoginPage;
+import factory.*;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -27,31 +25,37 @@ public class SkilloSiteTests extends TestObject {
         LoginPage loginPage = new LoginPage(webDriver);
         HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
         HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
+        ProfilePage profilePage = new ProfilePage(webDriver);
+        HomePage homePage = new HomePage(webDriver);
 
         headerLoggedOut.clickOnLoginLink();
-        Assert.assertTrue(loginPage.isUrlLoaded(), "The login page is not opened");
+        Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
 
         loginPage.setUsername(username);
         loginPage.setPassword(password);
         loginPage.selectRememberMeCheckbox();
         Assert.assertTrue(loginPage.isRememberMeCheckboxSelected(), "The Remember me checkbox is not selected");
         loginPage.clickOnSignInButton();
+        Assert.assertTrue(homePage.isPageLoaded(), "The home page is not opened");
 
-        //TODO: Add assertion if we are logged in - the url is the one for the posts
+        headerLoggedIn.clickOnProfileLink();
+        Assert.assertTrue(profilePage.isPageLoadedForUser(userId), "The profile page is not opened");
 
         headerLoggedIn.clickOnSignOutButton();
 
         //Check if on login page the username and password values are set and also the Remember me check box is selected
-        Assert.assertTrue(loginPage.isUrlLoaded(), "The login page is not opened");
+        Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
         Assert.assertTrue(loginPage.isRememberMeCheckboxSelected(), "The Remember me checkbox is not selected");
         Assert.assertEquals(loginPage.getUsernameInputValue(), username, "Username mismatch");
         Assert.assertEquals(loginPage.getPasswordInputValue(), password, "Password mismatch");
 
         //Login again after signing out without entering credentials because of having the Remember me check box checked
         loginPage.clickOnSignInButton();
-        //TODO: Add assertion if we are logged in - the url is the one for the posts
+        Assert.assertTrue(homePage.isPageLoaded(), "The home page is not opened");
+
         headerLoggedIn.clickOnSignOutButton();
         loginPage.deSelectRememberMeCheckbox();
         Assert.assertTrue(!loginPage.isRememberMeCheckboxSelected(), "The Remember me checkbox is selected");
+        Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
     }
 }
