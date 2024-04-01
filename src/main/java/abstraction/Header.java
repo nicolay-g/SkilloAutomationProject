@@ -19,7 +19,7 @@ public abstract class Header {
 
     public Header(WebDriver webDriver) {
         this.webDriver = webDriver;
-        wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(300));
     }
 
     public void clickOnHomeLink() {

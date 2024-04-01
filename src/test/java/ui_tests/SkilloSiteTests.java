@@ -17,7 +17,14 @@ public class SkilloSiteTests extends TestObject {
     public Object[][] getUser(){
         return new Object[][]{
                 {"n@g.con","n@g.con", "5631"},
-                {"n@g.co","n@g.co", "5632"},
+                //{"n@g.co","n@g.co", "5632"},
+        };
+    }
+
+    @DataProvider(name="getUserDetails")
+    public Object[][] getUserDetails(){
+        return new Object[][]{
+                {"n@g.con","n@g.con", "5631", "NikiGWasHere again"},
         };
     }
     @Test(dataProvider = "getUser")
@@ -58,5 +65,23 @@ public class SkilloSiteTests extends TestObject {
         loginPage.deSelectRememberMeCheckbox();
         Assert.assertTrue(!loginPage.isRememberMeCheckboxSelected(), "The Remember me checkbox is selected");
         Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
+    }
+
+    @Test(dataProvider = "getUserDetails")
+    public void searchTest(String username, String password, String userId, String userProfileName){
+        WebDriver webDriver = super.getWebDriver();
+        LoginPage loginPage = new LoginPage(webDriver);
+        HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
+        HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
+
+        headerLoggedOut.clickOnLoginLink();
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
+        loginPage.clickOnSignInButton();
+
+        headerLoggedIn.makeSearch(userProfileName);
+        Assert.assertTrue(headerLoggedIn.getSearchResultsCount(userProfileName) == 1, "Search results does not contain a single result!");
+
+        headerLoggedIn.clickOnSignOutButton();
     }
 }

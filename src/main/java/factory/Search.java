@@ -1,24 +1,20 @@
 package factory;
 
-import abstraction.Header;
-import dev.failsafe.internal.util.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
-public class HeaderLoggedIn extends Header {
-    @FindBy(id="nav-link-profile")
-    private WebElement profileLink;
-    @FindBy(id="nav-link-new-post")
-    private WebElement newPostLink;
-    @FindBy(xpath = "//i[@class='fas fa-sign-out-alt fa-lg']")
-    private WebElement signOutButton;
-    //private Search search;
+public class Search {
+    private WebDriver webDriver;
+    private WebDriverWait wait;
+
     @FindBy(xpath = "//input[@id='search-bar']")
     private WebElement searchInput;
     @FindBy(xpath = "//i[@class='fas fa-search']")
@@ -26,26 +22,12 @@ public class HeaderLoggedIn extends Header {
     @FindBy(xpath = "//div[@class='dropdown-container']")
     private WebElement searchResultsContainer;
 
-    public HeaderLoggedIn(WebDriver webDriver) {
-        super(webDriver);
-        //this.search = new Search(webDriver);
+
+    public Search(WebDriver webDriver) {
+        this.webDriver = webDriver;
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(300));
 
         PageFactory.initElements(this.webDriver, this);
-    }
-
-    public void clickOnProfileLink() {
-        wait.until(ExpectedConditions.visibilityOf(profileLink));
-        profileLink.click();
-    }
-
-    public void clickOnNewPostLink() {
-        wait.until(ExpectedConditions.visibilityOf(newPostLink));
-        newPostLink.click();
-    }
-
-    public void clickOnSignOutButton() {
-        wait.until(ExpectedConditions.visibilityOf(signOutButton));
-        signOutButton.click();
     }
 
     public void makeSearch(String textToSearch) {
@@ -53,14 +35,17 @@ public class HeaderLoggedIn extends Header {
         clickSearchButton();
     }
 
-    public int getSearchResultsCount(String textToSearch) {
+    public void validateSearchResults(String textToSearch) {
         wait.until(ExpectedConditions.visibilityOf(searchResultsContainer));
 
         List<WebElement> searchResultsElements = searchResultsContainer.
                 findElements(By.xpath("//div[@class='dropdown-container']//a[contains(text(),'" +
-                        textToSearch + "')]"));
+                textToSearch + "')]"));
 
-        return searchResultsElements.size();
+        for (WebElement resultElement : searchResultsElements) {
+            // Perform actions on each child element
+            System.out.println("Text of child element: " + resultElement.getText());
+        }
     }
 
     private void typeSearchText(String text) {
