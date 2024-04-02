@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+
+import java.io.File;
 import java.util.List;
 
 public class SkilloSiteTests extends TestObject {
@@ -24,6 +26,17 @@ public class SkilloSiteTests extends TestObject {
                 {"n@g.con","n@g.con", "NikiGWasHere"},
         };
     }
+
+    @DataProvider(name="getUserAndPostData")
+    public Object[][] getUserAndPostData(){
+        File postPicture = new File(UPLOAD_DIR + "CtLeeQc1C.jpg");
+        String postCaption = "Test post";
+        return new Object[][]{
+                {"n@g.con","n@g.con", postPicture, postCaption},
+                //{"n@g.co","n@g.co", "5632"},
+        };
+    }
+
     @Test(dataProvider = "getUser")
     public void loginTest(String username, String password, String userId){
         WebDriver webDriver = super.getWebDriver();
@@ -97,5 +110,37 @@ public class SkilloSiteTests extends TestObject {
             softAssert.assertTrue(itemText.contains(searchText), "Incorrect search results");
         }
         softAssert.assertAll();
+    }
+
+    @Test(dataProvider = "getUserAndPostData")
+    public void createPostTest(String username, String password, File postPicture, String postCaption) {
+        WebDriver webDriver = super.getWebDriver();
+        LoginPage loginPage = new LoginPage(webDriver);
+        HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
+        HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
+        ProfilePage profilePage = new ProfilePage(webDriver);
+        HomePage homePage = new HomePage(webDriver);
+        PostPage postPage = new PostPage(webDriver);
+
+        headerLoggedOut.clickOnLoginLink();
+        Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
+
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
+        loginPage.selectRememberMeCheckbox();
+        Assert.assertTrue(loginPage.isRememberMeCheckboxSelected(), "The Remember me checkbox is not selected");
+        loginPage.clickOnSignInButton();
+        Assert.assertTrue(homePage.isPageLoaded(), "The home page is not opened");
+
+        headerLoggedIn.clickOnNewPostLink();
+        postPage.uploadPicture(postPicture);
+
+        String expectedPictureFileName = postPicture.getName();
+        Assert.assertTrue(postPage.isFileUploaded(expectedPictureFileName), "Incorrect picture is uploaded");
+
+        //TODO: Add validation to the actions below
+        postPage.setPostCaption(postCaption);
+        postPage.clickSubmitPostButton();
+
     }
 }
