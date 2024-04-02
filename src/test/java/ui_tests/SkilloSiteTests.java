@@ -2,17 +2,14 @@ package ui_tests;
 
 import factory.*;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+import java.util.List;
 
 public class SkilloSiteTests extends TestObject {
-
-    @Test
-    public void initialTest() {
-        Assert.assertTrue(true);
-    }
-
     @DataProvider(name="getUser")
     public Object[][] getUser(){
         return new Object[][]{
@@ -24,7 +21,7 @@ public class SkilloSiteTests extends TestObject {
     @DataProvider(name="getUserDetails")
     public Object[][] getUserDetails(){
         return new Object[][]{
-                {"n@g.con","n@g.con", "5631", "NikiGWasHere"},
+                {"n@g.con","n@g.con", "NikiGWasHere"},
         };
     }
     @Test(dataProvider = "getUser")
@@ -63,12 +60,12 @@ public class SkilloSiteTests extends TestObject {
 
         headerLoggedIn.clickOnSignOutButton();
         loginPage.deSelectRememberMeCheckbox();
-        Assert.assertTrue(!loginPage.isRememberMeCheckboxSelected(), "The Remember me checkbox is selected");
+        Assert.assertFalse(loginPage.isRememberMeCheckboxSelected(), "The Remember me checkbox is selected");
         Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
     }
 
     @Test(dataProvider = "getUserDetails")
-    public void searchTest(String username, String password, String userId, String userProfileName){
+    public void searchTest(String username, String password, String userProfileName){
         WebDriver webDriver = super.getWebDriver();
         LoginPage loginPage = new LoginPage(webDriver);
         HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
@@ -80,8 +77,25 @@ public class SkilloSiteTests extends TestObject {
         loginPage.clickOnSignInButton();
 
         headerLoggedIn.makeSearch(userProfileName);
-        Assert.assertTrue(headerLoggedIn.getSearchResultsCount(userProfileName) == 1, "Search results does not contain a single result!");
+
+        List<WebElement> searchResults = headerLoggedIn.getSearchResultsCount(userProfileName);
+
+        validateSearchResults(userProfileName, searchResults);
 
         headerLoggedIn.clickOnSignOutButton();
+    }
+
+    private void validateSearchResults(String searchText, List<WebElement> searchResults) {
+        SoftAssert softAssert = new SoftAssert();
+
+        int searchResultsItems = searchResults.size();
+        softAssert.assertTrue(searchResultsItems == 2,
+                "Search results count is not 2! Actual results count is " + searchResultsItems);
+        for (WebElement item : searchResults) {
+            String itemText = item.getText();
+            System.out.println(itemText);
+            softAssert.assertTrue(itemText.contains(searchText), "Incorrect search results");
+        }
+        softAssert.assertAll();
     }
 }

@@ -1,14 +1,12 @@
 package factory;
 
 import abstraction.Header;
-import dev.failsafe.internal.util.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import java.util.List;
 
 public class HeaderLoggedIn extends Header {
@@ -53,14 +51,17 @@ public class HeaderLoggedIn extends Header {
         clickSearchButton();
     }
 
-    public int getSearchResultsCount(String textToSearch) {
+    public List<WebElement> getSearchResultsCount(String textToSearch) {
         wait.until(ExpectedConditions.visibilityOf(searchResultsContainer));
+
+        //This line is a kind of HACK that clicks on the search input to force getting all matching results!!
+        //searchInput.click();
 
         List<WebElement> searchResultsElements = searchResultsContainer.
                 findElements(By.xpath("//div[@class='dropdown-container']//a[contains(text(),'" +
                         textToSearch + "')]"));
 
-        return searchResultsElements.size();
+        return searchResultsElements;
     }
 
     private void typeSearchText(String text) {
