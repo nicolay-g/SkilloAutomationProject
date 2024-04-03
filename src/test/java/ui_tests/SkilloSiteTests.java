@@ -32,7 +32,7 @@ public class SkilloSiteTests extends TestObject {
         File postPicture = new File(UPLOAD_DIR + "CtLeeQc1C.jpg");
         String postCaption = "Test post";
         return new Object[][]{
-                {"n@g.con","n@g.con", postPicture, postCaption},
+                {"n@g.con","n@g.con", "5631", postPicture, postCaption},
                 //{"n@g.co","n@g.co", "5632"},
         };
     }
@@ -113,7 +113,7 @@ public class SkilloSiteTests extends TestObject {
     }
 
     @Test(dataProvider = "getUserAndPostData")
-    public void createPostTest(String username, String password, File postPicture, String postCaption) {
+    public void createPostTest(String username, String password, String userId, File postPicture, String postCaption) {
         WebDriver webDriver = super.getWebDriver();
         LoginPage loginPage = new LoginPage(webDriver);
         HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
@@ -127,20 +127,21 @@ public class SkilloSiteTests extends TestObject {
 
         loginPage.setUsername(username);
         loginPage.setPassword(password);
-        loginPage.selectRememberMeCheckbox();
-        Assert.assertTrue(loginPage.isRememberMeCheckboxSelected(), "The Remember me checkbox is not selected");
         loginPage.clickOnSignInButton();
         Assert.assertTrue(homePage.isPageLoaded(), "The home page is not opened");
 
         headerLoggedIn.clickOnNewPostLink();
+
+        postPage.setPostCaption(postCaption);
+
         postPage.uploadPicture(postPicture);
 
         String expectedPictureFileName = postPicture.getName();
         Assert.assertTrue(postPage.isFileUploaded(expectedPictureFileName), "Incorrect picture is uploaded");
 
         //TODO: Add validation to the actions below
-        postPage.setPostCaption(postCaption);
         postPage.clickSubmitPostButton();
 
+        Assert.assertTrue(profilePage.isPageLoadedForUser(userId), "Current page in not profile page for " + userId + " user");
     }
 }

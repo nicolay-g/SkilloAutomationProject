@@ -20,8 +20,9 @@ public class PostPage {
     private WebElement uploadedFileName;
     @FindBy(xpath = "//input[@name='caption']")
     private WebElement postCaptionInput;
-    @FindBy(xpath = "//button[@id='create-post']")
+    @FindBy(id = "create-post")
     private WebElement submitPostButton;
+    //Won't be able to use the switch as it's not working on the site!
     @FindBy(xpath = "//input[@id='customSwitch2']")
     private WebElement postStatusSwitch;
 
@@ -48,7 +49,7 @@ public class PostPage {
     }
 
     public void clickSubmitPostButton() {
-        wait.until(ExpectedConditions.visibilityOf(submitPostButton));
+        //wait.until(ExpectedConditions.elementToBeClickable(submitPostButton));
         submitPostButton.click();
     }
 }
