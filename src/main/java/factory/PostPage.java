@@ -29,9 +29,9 @@ public class PostPage {
 
     public PostPage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
 
-        PageFactory.initElements(webDriver, this);
+        PageFactory.initElements(this.webDriver, this);
     }
 
     public void uploadPicture(File file) {

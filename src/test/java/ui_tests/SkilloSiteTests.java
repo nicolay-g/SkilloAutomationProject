@@ -10,6 +10,7 @@ import org.testng.asserts.SoftAssert;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 public class SkilloSiteTests extends TestObject {
     @DataProvider(name="getUser")
@@ -142,5 +143,35 @@ public class SkilloSiteTests extends TestObject {
 
         postPage.clickSubmitPostButton();
         Assert.assertTrue(profilePage.isPageLoadedForUser(userId), "Current page in not profile page for " + userId + " user");
+    }
+
+    @Test(dataProvider = "getUserDetails")
+    public void updateUserProfileTest(String username, String password, String userProfileName) {
+        WebDriver webDriver = super.getWebDriver();
+        LoginPage loginPage = new LoginPage(webDriver);
+        HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
+        HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
+        ProfilePage profilePage = new ProfilePage(webDriver);
+        SoftAssert softAssert = new SoftAssert();
+
+        headerLoggedOut.clickOnLoginLink();
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
+        loginPage.clickOnSignInButton();
+
+        headerLoggedIn.clickOnProfileLink();
+
+        //Generate a random integer number in the range [0-1000] that will be used as part of the public info
+        Random random = new Random();
+        String expectedPublicInfo = "Public - " + String.valueOf(random.nextInt(1001));
+        profilePage.modifyProfilePublicInfo(expectedPublicInfo);
+        String actualProfilePublicInfo = profilePage.getProfilePublicInfo();
+
+        //Validate that the profile details contain both the user profile name and the public info
+        softAssert.assertTrue(actualProfilePublicInfo.contains(userProfileName),
+                "Profile public info does not contain profile name: " + userProfileName);
+        softAssert.assertTrue(actualProfilePublicInfo.contains(expectedPublicInfo),
+                "Profile public info does not contain " + expectedPublicInfo);
+        softAssert.assertAll();
     }
 }
