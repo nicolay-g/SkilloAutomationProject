@@ -131,17 +131,16 @@ public class SkilloSiteTests extends TestObject {
         Assert.assertTrue(homePage.isPageLoaded(), "The home page is not opened");
 
         headerLoggedIn.clickOnNewPostLink();
+        Assert.assertTrue(postPage.isPageLoaded(), "The new post page is not opened");
 
         postPage.setPostCaption(postCaption);
+        Assert.assertTrue(postPage.isPostCaptionSet(postCaption), "The post caption is not " + postCaption);
 
         postPage.uploadPicture(postPicture);
-
         String expectedPictureFileName = postPicture.getName();
         Assert.assertTrue(postPage.isFileUploaded(expectedPictureFileName), "Incorrect picture is uploaded");
 
-        //TODO: Add validation to the actions below
         postPage.clickSubmitPostButton();
-
         Assert.assertTrue(profilePage.isPageLoadedForUser(userId), "Current page in not profile page for " + userId + " user");
     }
 }

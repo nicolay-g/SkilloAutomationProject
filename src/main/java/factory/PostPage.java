@@ -12,6 +12,7 @@ import java.io.File;
 import java.time.Duration;
 
 public class PostPage {
+    private static final String NEW_POST_PAGE_BASE_URL = "http://training.skillo-bg.com:4200/posts/create";
     private WebDriver webDriver;
     private WebDriverWait wait;
     @FindBy(xpath = "//input[contains(@class,'file')]")
@@ -49,7 +50,18 @@ public class PostPage {
     }
 
     public void clickSubmitPostButton() {
-        //wait.until(ExpectedConditions.elementToBeClickable(submitPostButton));
+        wait.until(ExpectedConditions.visibilityOf(submitPostButton));
         submitPostButton.click();
+    }
+
+    public boolean isPageLoaded() {
+        return wait.until(ExpectedConditions.urlToBe(NEW_POST_PAGE_BASE_URL));
+    }
+
+
+    public boolean isPostCaptionSet(String expectedPostCaption) {
+        wait.until(ExpectedConditions.visibilityOf(postCaptionInput));
+        String actualPostCaption = postCaptionInput.getAttribute("value");
+        return (expectedPostCaption.equals(actualPostCaption));
     }
 }
