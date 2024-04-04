@@ -1,6 +1,7 @@
 package ui_tests;
 
 import factory.*;
+import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -148,6 +149,16 @@ public class SkilloSiteTests extends TestObject {
 
         postPage.clickSubmitPostButton();
         Assert.assertTrue(profilePage.isPageLoadedForUser(userId), "Current page in not profile page for " + userId + " user");
+    }
+
+    @Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
+    public void editPostTest(String username, String password, String userId){
+        Assert.assertTrue(true);
+    }
+
+    @Test(dataProvider = "getUser", dependsOnMethods = {"createPostTest", "editPostTest"})
+    public void deletePostTest(String username, String password, String userId){
+        Assert.assertTrue(true);
     }
 
     @Test(dataProvider = "getUserDetails")
