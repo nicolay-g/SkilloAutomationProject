@@ -23,6 +23,7 @@ public class ProfilePage {
     private WebElement editUserButton;
     @FindBy(xpath = "//p")
     private WebElement publicInfo;
+    private ToastContainer toastContainer;
 
     private ModifyProfileDlg modifyProfileDlg;
 
@@ -31,6 +32,7 @@ public class ProfilePage {
         this.webDriver = webDriver;
         this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
         this.modifyProfileDlg = new ModifyProfileDlg(webDriver);
+        this.toastContainer = new ToastContainer(webDriver);
 
         PageFactory.initElements(this.webDriver, this);
     }
@@ -48,10 +50,8 @@ public class ProfilePage {
 
     public String getProfilePublicInfo() {
         //Waits until the toast message disappears before getting the public info
-        //TODO: make a separate object for the toast messages instead of directly creating a web element here
-        WebElement toastMessage = webDriver.findElement(By.cssSelector("#toast-container"));
-        wait.until(ExpectedConditions.visibilityOf(toastMessage));
-        wait.until(ExpectedConditions.invisibilityOf(toastMessage));
+        wait.until(ExpectedConditions.visibilityOf(toastContainer.getToastContainerElement()));
+        wait.until(ExpectedConditions.invisibilityOf(toastContainer.getToastContainerElement()));
 
         wait.until(ExpectedConditions.visibilityOf(publicInfo));
         String publicInfoText = publicInfo.getText();
