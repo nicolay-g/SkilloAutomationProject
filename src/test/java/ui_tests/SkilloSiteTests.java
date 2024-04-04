@@ -1,14 +1,20 @@
 package ui_tests;
 
 import factory.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
@@ -173,5 +179,50 @@ public class SkilloSiteTests extends TestObject {
         softAssert.assertTrue(actualProfilePublicInfo.contains(expectedPublicInfo),
                 "Profile public info does not contain " + expectedPublicInfo);
         softAssert.assertAll();
+    }
+
+    @Test
+    public void loginFailingTest(){
+        WebDriver webDriver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+
+        webDriver.get("http://training.skillo-bg.com:4200/posts/all");
+        webDriver.manage().window().maximize();
+
+        WebElement login = wait.until(ExpectedConditions.
+                presenceOfElementLocated(new By.ByXPath("//*[@id='nav-link-login']")));
+
+        String loginText = login.getText();
+        Assert.assertEquals(loginText, "Login");
+        login.click();
+
+        WebElement loginFormTitle = wait.until(ExpectedConditions.
+                presenceOfElementLocated(By.cssSelector(".h4.mb-4")));
+        Assert.assertEquals(loginFormTitle.getText(), "Sign in");
+
+        WebElement username = wait.until(ExpectedConditions.
+                presenceOfElementLocated(By.id("defaultLoginFormUsername")));
+        username.sendKeys("n@g.con");
+
+        WebElement password = wait.until(ExpectedConditions.
+                presenceOfElementLocated(By.id("defaultLoginFormPassword")));
+        password.sendKeys("n@g1.con");
+
+        WebElement loginButton = wait.until(ExpectedConditions.
+                presenceOfElementLocated(By.id("sign-in-button")));
+        loginButton.click();
+
+        WebElement errorMessageBox = wait.until(ExpectedConditions.
+                presenceOfElementLocated(By.xpath("//*[@id='toast-container']//*[@class='toast-message ng-star-inserted']")));
+
+        Actions actionsForElements = new Actions(webDriver);
+        actionsForElements.moveToElement(errorMessageBox).perform();
+
+        String expectedText = "Invalid password";
+        //" UsernameOrEmail cannot be empty ";
+        String actualText = errorMessageBox.getText();
+        Assert.assertEquals(actualText, expectedText, "The actual text is not matching the expected text");
+
+        webDriver.quit();
     }
 }
