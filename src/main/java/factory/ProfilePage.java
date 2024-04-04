@@ -1,5 +1,6 @@
 package factory;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -46,6 +47,12 @@ public class ProfilePage {
     }
 
     public String getProfilePublicInfo() {
+        //Waits until the toast message disappears before getting the public info
+        //TODO: make a separate object for the toast messages instead of directly creating a web element here
+        WebElement toastMessage = webDriver.findElement(By.cssSelector("#toast-container"));
+        wait.until(ExpectedConditions.visibilityOf(toastMessage));
+        wait.until(ExpectedConditions.invisibilityOf(toastMessage));
+
         wait.until(ExpectedConditions.visibilityOf(publicInfo));
         String publicInfoText = publicInfo.getText();
         return publicInfoText;
