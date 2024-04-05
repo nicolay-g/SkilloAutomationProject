@@ -64,8 +64,7 @@ public class ProfilePage {
         wait.until(ExpectedConditions.invisibilityOf(toastContainer.getToastContainerElement()));
 
         wait.until(ExpectedConditions.visibilityOf(publicInfo));
-        String publicInfoText = publicInfo.getText();
-        return publicInfoText;
+        return publicInfo.getText();
     }
 
     public void scrollDownToBottom() throws InterruptedException {
