@@ -147,7 +147,8 @@ public class SkilloSiteTests extends TestObject {
         Assert.assertTrue(postPage.isFileUploaded(expectedPictureFileName), "Incorrect picture is uploaded");
 
         postPage.clickSubmitPostButton();
-        Assert.assertTrue(profilePage.isPageLoadedForUser(userId), "Current page in not profile page for " + userId + " user");
+        Assert.assertTrue(profilePage.isPageLoadedForUser(userId),
+                "Current page in not profile page for " + userId + " user");
     }
 
     //@Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
@@ -164,6 +165,8 @@ public class SkilloSiteTests extends TestObject {
         HomePage homePage = new HomePage(webDriver);
         PostsContainer postsContainer = new PostsContainer(webDriver);
         PostInfoContainer postInfoContainer = new PostInfoContainer(webDriver);
+        ToastContainer toastContainer = new ToastContainer(webDriver);
+        ProfilePage profilePage = new ProfilePage(webDriver);
 
         headerLoggedOut.clickOnLoginLink();
         Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
@@ -174,14 +177,23 @@ public class SkilloSiteTests extends TestObject {
         Assert.assertTrue(homePage.isPageLoaded(), "The home page is not opened");
 
         headerLoggedIn.clickOnProfileLink();
+        Assert.assertTrue(profilePage.isPageLoadedForUser(userId),
+                "Current page in not profile page for " + userId + " user");
 
+        //Get the number of posts prior deleting the latest one
         int numberOfPosts = postsContainer.getNumberOfPosts();
         if (numberOfPosts > 0) {
             WebElement latestPost = postsContainer.getLastPost();
             //TODO: create a method that returns the first/last/n-th element of a list and place it in the PostDetailsPage class
             //where a call to PostInfoContainer is also used
             latestPost.click();
-            postInfoContainer.deletePost();
+            postInfoContainer.clickDeletePostBtn();
+
+            String actualAlertMessage = toastContainer.getAlertMessageText();
+            Assert.assertEquals(actualAlertMessage, "Post Deleted!",
+                    "The actual message text is not matching the expected text");
+            Assert.assertTrue(profilePage.isPageLoadedForUser(userId),
+                    "Current page in not profile page for " + userId + " user");
 
             int numberOfPostsAfterDeletion = postsContainer.getNumberOfPosts();
             //Check if the number of posts prior deletion equals the number of posts after deletion + 1

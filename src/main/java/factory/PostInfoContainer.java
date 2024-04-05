@@ -26,16 +26,12 @@ public class PostInfoContainer {
         PageFactory.initElements(webDriver, this);
     }
 
-    public void deletePost() {
+    public void clickDeletePostBtn() {
         ToastContainer toastContainer = new ToastContainer(this.webDriver);
 
         wait.until(ExpectedConditions.visibilityOf(deletePost));
         deletePost.click();
         wait.until(ExpectedConditions.visibilityOf(deletePostYesButton));
         deletePostYesButton.click();
-
-        //TODO: Waiting the page to be fully loaded - probably not necessary code!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        wait.until(ExpectedConditions.visibilityOf(toastContainer.getToastContainerElement()));
-        wait.until(ExpectedConditions.invisibilityOf(toastContainer.getToastContainerElement()));
     }
 }
