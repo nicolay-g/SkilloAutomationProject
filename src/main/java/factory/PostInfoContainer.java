@@ -27,8 +27,6 @@ public class PostInfoContainer {
     }
 
     public void clickDeletePostBtn() {
-        ToastContainer toastContainer = new ToastContainer(this.webDriver);
-
         wait.until(ExpectedConditions.visibilityOf(deletePost));
         deletePost.click();
         wait.until(ExpectedConditions.visibilityOf(deletePostYesButton));
