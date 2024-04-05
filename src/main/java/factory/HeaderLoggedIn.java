@@ -16,17 +16,17 @@ public class HeaderLoggedIn extends Header {
     private WebElement newPostLink;
     @FindBy(xpath = "//i[@class='fas fa-sign-out-alt fa-lg']")
     private WebElement signOutButton;
-    //private Search search;
     @FindBy(xpath = "//input[@id='search-bar']")
     private WebElement searchInput;
     @FindBy(xpath = "//i[@class='fas fa-search']")
     private WebElement searchButton;
     @FindBy(xpath = "//div[@class='dropdown-container']")
     private WebElement searchResultsContainer;
+    @FindBy(xpath = "//app-spinner")
+    private WebElement appSpinner;
 
     public HeaderLoggedIn(WebDriver webDriver) {
         super(webDriver);
-        //this.search = new Search(webDriver);
 
         PageFactory.initElements(this.webDriver, this);
     }
@@ -34,6 +34,9 @@ public class HeaderLoggedIn extends Header {
     public void clickOnProfileLink() {
         wait.until(ExpectedConditions.visibilityOf(profileLink));
         profileLink.click();
+        wait.until(ExpectedConditions.visibilityOf(appSpinner));
+        wait.until(ExpectedConditions.invisibilityOf(appSpinner));
+
     }
 
     public void clickOnNewPostLink() {

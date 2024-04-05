@@ -157,7 +157,7 @@ public class SkilloSiteTests extends TestObject {
         Assert.assertTrue(true);
     }
 
-    //@Test(dataProvider = "getUser")
+    @Test(dataProvider = "getUser", dependsOnMethods = {"createPostTest"})
     public void deletePostTest(String username, String password, String userId){
         WebDriver webDriver = super.getWebDriver();
         LoginPage loginPage = new LoginPage(webDriver);

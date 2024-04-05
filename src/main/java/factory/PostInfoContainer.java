@@ -15,6 +15,10 @@ public class PostInfoContainer {
     private final WebDriverWait wait;
     @FindBy(xpath = "//label[@class='delete-ask']")
     WebElement deletePost;
+    @FindBy(xpath = "//button[text()='Yes']")
+    WebElement deletePostYesButton;
+    @FindBy(xpath = "//button[text()='No']")
+    WebElement deletePostNoButton;
 
     public PostInfoContainer(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -24,7 +28,15 @@ public class PostInfoContainer {
     }
 
     public void clickDeletePost() {
+        ToastContainer toastContainer = new ToastContainer(this.webDriver);
+
         wait.until(ExpectedConditions.visibilityOf(deletePost));
         deletePost.click();
+        wait.until(ExpectedConditions.visibilityOf(deletePostYesButton));
+        deletePostYesButton.click();
+
+        //Waiting the page to be fully loaded
+        wait.until(ExpectedConditions.visibilityOf(toastContainer.getToastContainerElement()));
+        wait.until(ExpectedConditions.invisibilityOf(toastContainer.getToastContainerElement()));
     }
 }
