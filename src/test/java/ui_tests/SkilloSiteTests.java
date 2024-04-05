@@ -2,6 +2,7 @@ package ui_tests;
 
 import factory.*;
 import org.checkerframework.checker.units.qual.A;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -151,14 +152,43 @@ public class SkilloSiteTests extends TestObject {
         Assert.assertTrue(profilePage.isPageLoadedForUser(userId), "Current page in not profile page for " + userId + " user");
     }
 
-    @Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
+    //@Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
     public void editPostTest(String username, String password, String userId){
         Assert.assertTrue(true);
     }
 
-    @Test(dataProvider = "getUser", dependsOnMethods = {"createPostTest", "editPostTest"})
+    //@Test(dataProvider = "getUser")
     public void deletePostTest(String username, String password, String userId){
-        Assert.assertTrue(true);
+        WebDriver webDriver = super.getWebDriver();
+        LoginPage loginPage = new LoginPage(webDriver);
+        HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
+        HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
+        ProfilePage profilePage = new ProfilePage(webDriver);
+        HomePage homePage = new HomePage(webDriver);
+        PostPage postPage = new PostPage(webDriver);
+        PostInfoContainer postInfoContainer = new PostInfoContainer(webDriver);
+
+        headerLoggedOut.clickOnLoginLink();
+        Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
+
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
+        loginPage.clickOnSignInButton();
+        Assert.assertTrue(homePage.isPageLoaded(), "The home page is not opened");
+
+        headerLoggedIn.clickOnProfileLink();
+
+        List<WebElement> posts = webDriver.findElements(By.xpath("//div[@class='container']//app-post"));
+        for (WebElement post : posts) {
+            System.out.println(post.getAttribute("class"));
+        }
+
+        WebElement latestPost = posts.getLast();
+        //TODO: create a method that returns the first/last/n-th element of a list and place it in the PostDetailsPage class
+        //where a call to PostInfoContainer is also used
+        latestPost.click();
+        postInfoContainer.clickDeletePost();
+        //TODO: Add assert to check if the post is really deleted
     }
 
     @Test(dataProvider = "getUserDetails")

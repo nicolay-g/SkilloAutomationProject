@@ -23,6 +23,8 @@ public class ProfilePage {
     private WebElement editUserButton;
     @FindBy(xpath = "//p")
     private WebElement publicInfo;
+    @FindBy(css = "#toast-container")
+    private WebElement toastContainerElement;
     private ToastContainer toastContainer;
 
     private ModifyProfileDlg modifyProfileDlg;
@@ -31,8 +33,8 @@ public class ProfilePage {
     public ProfilePage(WebDriver webDriver) {
         this.webDriver = webDriver;
         this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
-        this.modifyProfileDlg = new ModifyProfileDlg(webDriver);
-        this.toastContainer = new ToastContainer(webDriver);
+        this.modifyProfileDlg = new ModifyProfileDlg(this.webDriver);
+        this.toastContainer = new ToastContainer(this.webDriver);
 
         PageFactory.initElements(this.webDriver, this);
     }
