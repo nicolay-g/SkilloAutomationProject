@@ -2,6 +2,7 @@ package factory;
 
 import abstraction.Header;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -36,7 +37,6 @@ public class HeaderLoggedIn extends Header {
         profileLink.click();
         wait.until(ExpectedConditions.visibilityOf(appSpinner));
         wait.until(ExpectedConditions.invisibilityOf(appSpinner));
-
     }
 
     public void clickOnNewPostLink() {

@@ -157,7 +157,7 @@ public class SkilloSiteTests extends TestObject {
     }
 
     @Test(dataProvider = "getUser", dependsOnMethods = {"createPostTest"})
-    public void deletePostTest(String username, String password, String userId){
+    public void deletePostTest(String username, String password, String userId) throws InterruptedException {
         WebDriver webDriver = super.getWebDriver();
         LoginPage loginPage = new LoginPage(webDriver);
         HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
@@ -180,12 +180,11 @@ public class SkilloSiteTests extends TestObject {
         Assert.assertTrue(profilePage.isPageLoadedForUser(userId),
                 "Current page in not profile page for " + userId + " user");
 
-        //Get the number of posts prior deleting the latest one
+        //Get the number of posts prior deleting the latest one after scrolling to the bottom of the page
+        profilePage.scrollDownToBottom();
         int numberOfPosts = postsContainer.getNumberOfPosts();
         if (numberOfPosts > 0) {
             WebElement latestPost = postsContainer.getLastPost();
-            //TODO: create a method that returns the first/last/n-th element of a list and place it in the PostDetailsPage class
-            //where a call to PostInfoContainer is also used
             latestPost.click();
             postInfoContainer.clickDeletePostBtn();
 
@@ -195,6 +194,7 @@ public class SkilloSiteTests extends TestObject {
             Assert.assertTrue(profilePage.isPageLoadedForUser(userId),
                     "Current page in not profile page for " + userId + " user");
 
+            profilePage.scrollDownToBottom();
             int numberOfPostsAfterDeletion = postsContainer.getNumberOfPosts();
             //Check if the number of posts prior deletion equals the number of posts after deletion + 1
             Assert.assertEquals(numberOfPostsAfterDeletion, numberOfPosts - 1);
@@ -234,7 +234,7 @@ public class SkilloSiteTests extends TestObject {
     }
 
     @Test(dataProvider = "getInvalidUserCredentials")
-    public void loginFailingTest(String username, String password, String expectedAlertMessage) {
+    public void loginNegativeTest(String username, String password, String expectedAlertMessage) {
         WebDriver webDriver = super.getWebDriver();
         LoginPage loginPage = new LoginPage(webDriver);
         HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);

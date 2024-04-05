@@ -1,11 +1,9 @@
 package factory;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -25,11 +23,30 @@ public class PostsContainer {
         PageFactory.initElements(webDriver, this);
     }
 
+    public WebElement getFirstPost() {
+        if (!posts.isEmpty()) {
+            return posts.getFirst();
+        } else {
+            return null;
+        }
+    }
     public WebElement getLastPost() {
-        return posts.getLast();
+        if (!posts.isEmpty()) {
+            return posts.getLast();
+        } else {
+            return null;
+        }
+    }
+
+    public WebElement getNthPost(int index) {
+        if ((!posts.isEmpty()) && (index > -1) && (index < posts.size())) {
+            return posts.get(index);
+        } else {
+            return null;
+        }
     }
 
     public int getNumberOfPosts() {
-        return (posts.size() > 0) ? posts.size() : 0;
+        return (!posts.isEmpty()) ? posts.size() : 0;
     }
 }

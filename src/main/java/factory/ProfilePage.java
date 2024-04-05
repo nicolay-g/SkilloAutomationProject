@@ -1,6 +1,7 @@
 package factory;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class ProfilePage {
     private WebDriver webDriver;
@@ -25,9 +27,14 @@ public class ProfilePage {
     private WebElement publicInfo;
     @FindBy(css = "#toast-container")
     private WebElement toastContainerElement;
+    @FindBy(xpath = "//app-spinner")
+    private WebElement appSpinner;
+
     private ToastContainer toastContainer;
 
     private ModifyProfileDlg modifyProfileDlg;
+
+    private PostsContainer posts;
 
 
     public ProfilePage(WebDriver webDriver) {
@@ -35,6 +42,7 @@ public class ProfilePage {
         this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
         this.modifyProfileDlg = new ModifyProfileDlg(this.webDriver);
         this.toastContainer = new ToastContainer(this.webDriver);
+        this.posts = new PostsContainer(this.webDriver);
 
         PageFactory.initElements(this.webDriver, this);
     }
@@ -58,5 +66,25 @@ public class ProfilePage {
         wait.until(ExpectedConditions.visibilityOf(publicInfo));
         String publicInfoText = publicInfo.getText();
         return publicInfoText;
+    }
+
+    public void scrollDownToBottom() throws InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+
+        int postsCountBeforeScrolling = posts.getNumberOfPosts();
+        int postsCountAfterScrolling = postsCountBeforeScrolling;
+        boolean allPostsLoaded = false;
+        do {
+            js.executeScript("window.scrollBy(0,2000)", "");
+            Thread.sleep(5000);
+            postsCountAfterScrolling = posts.getNumberOfPosts();
+
+            if (postsCountAfterScrolling > postsCountBeforeScrolling) {
+                postsCountBeforeScrolling = postsCountAfterScrolling;
+                allPostsLoaded = false;
+            } else {
+                allPostsLoaded = true;
+            }
+        } while (!allPostsLoaded);
     }
 }
