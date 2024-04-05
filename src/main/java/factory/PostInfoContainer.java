@@ -1,7 +1,6 @@
 package factory;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverInfo;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -27,7 +26,7 @@ public class PostInfoContainer {
         PageFactory.initElements(webDriver, this);
     }
 
-    public void clickDeletePost() {
+    public void deletePost() {
         ToastContainer toastContainer = new ToastContainer(this.webDriver);
 
         wait.until(ExpectedConditions.visibilityOf(deletePost));
@@ -35,7 +34,7 @@ public class PostInfoContainer {
         wait.until(ExpectedConditions.visibilityOf(deletePostYesButton));
         deletePostYesButton.click();
 
-        //Waiting the page to be fully loaded
+        //TODO: Waiting the page to be fully loaded - probably not necessary code!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         wait.until(ExpectedConditions.visibilityOf(toastContainer.getToastContainerElement()));
         wait.until(ExpectedConditions.invisibilityOf(toastContainer.getToastContainerElement()));
     }

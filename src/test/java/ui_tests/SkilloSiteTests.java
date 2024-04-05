@@ -1,8 +1,6 @@
 package ui_tests;
 
 import factory.*;
-import org.checkerframework.checker.units.qual.A;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -163,9 +161,8 @@ public class SkilloSiteTests extends TestObject {
         LoginPage loginPage = new LoginPage(webDriver);
         HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
         HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
-        ProfilePage profilePage = new ProfilePage(webDriver);
         HomePage homePage = new HomePage(webDriver);
-        PostPage postPage = new PostPage(webDriver);
+        PostsContainer postsContainer = new PostsContainer(webDriver);
         PostInfoContainer postInfoContainer = new PostInfoContainer(webDriver);
 
         headerLoggedOut.clickOnLoginLink();
@@ -178,17 +175,20 @@ public class SkilloSiteTests extends TestObject {
 
         headerLoggedIn.clickOnProfileLink();
 
-        List<WebElement> posts = webDriver.findElements(By.xpath("//div[@class='container']//app-post"));
-        for (WebElement post : posts) {
-            System.out.println(post.getAttribute("class"));
-        }
+        int numberOfPosts = postsContainer.getNumberOfPosts();
+        if (numberOfPosts > 0) {
+            WebElement latestPost = postsContainer.getLastPost();
+            //TODO: create a method that returns the first/last/n-th element of a list and place it in the PostDetailsPage class
+            //where a call to PostInfoContainer is also used
+            latestPost.click();
+            postInfoContainer.deletePost();
 
-        WebElement latestPost = posts.getLast();
-        //TODO: create a method that returns the first/last/n-th element of a list and place it in the PostDetailsPage class
-        //where a call to PostInfoContainer is also used
-        latestPost.click();
-        postInfoContainer.clickDeletePost();
-        //TODO: Add assert to check if the post is really deleted
+            int numberOfPostsAfterDeletion = postsContainer.getNumberOfPosts();
+            //Check if the number of posts prior deletion equals the number of posts after deletion + 1
+            Assert.assertEquals(numberOfPostsAfterDeletion, numberOfPosts - 1);
+        } else {
+            System.out.println("No posts are available, nothing will be deleted");
+        }
     }
 
     @Test(dataProvider = "getUserDetails")
