@@ -1,14 +1,20 @@
 package ui_tests;
 
 import factory.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
@@ -182,7 +188,7 @@ public class SkilloSiteTests extends TestObject {
     }
 
     //@Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
-    @Test(dataProvider = "getUser")
+    @Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
     public void editPostTest(String username, String password, String userId) throws InterruptedException {
         Assert.assertTrue(true);
 
@@ -192,9 +198,9 @@ public class SkilloSiteTests extends TestObject {
         HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
         HomePage homePage = new HomePage(webDriver);
         PostsContainer postsContainer = new PostsContainer(webDriver);
-        PostEntityDetails postEntityDetails = new PostEntityDetails(webDriver);
-        ToastContainer toastContainer = new ToastContainer(webDriver);
+        PostEntityDetails post = new PostEntityDetails(webDriver);
         ProfilePage profilePage = new ProfilePage(webDriver);
+        SoftAssert softAssert = new SoftAssert();
 
         headerLoggedOut.clickOnLoginLink();
         Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
@@ -211,23 +217,34 @@ public class SkilloSiteTests extends TestObject {
         //Get the number of posts prior deleting the latest one after scrolling to the bottom of the page
         profilePage.scrollDownToBottom();
         int numberOfPosts = postsContainer.getPostsCount();
-        if (numberOfPosts > 0) {
-            WebElement latestPost = postsContainer.getLastPost();
-            latestPost.click();
-            postEntityDetails.addPostComment("Hello world!");
+        //Proceed to the next steps only if there is at least one post
+        Assert.assertTrue(numberOfPosts > 0, "No post is available to edit!");
 
-            //TODO: Implement wait until the list of comments gets refreshed and then validate!!!!!
-            //Assert.assertEquals(postEntityDetails.getPostLatestCommentText(), "Hello world!");
+        postsContainer.clickOnLastPost();
 
-            //...
+        String postCommentText = "It's " + getCurrentDateTime();
+        int expectedPostCommentsCount = post.postComments.getPostCommentsCount();
 
-        } else {
-            System.out.println("No posts are available, nothing will be deleted");
-        }
+        post.postComments.addComment(postCommentText);
 
+        post.closePostDetailsDialog();
+
+        postsContainer.clickOnLastPost();
+
+        softAssert.assertEquals(post.postComments.getLastComment(), postCommentText,
+                "Wrong text for the last post comment");
+        softAssert.assertEquals(post.postComments.getPostCommentsCount(), expectedPostCommentsCount + 1,
+                "Wrong post comments count");
+        softAssert.assertAll();
     }
 
-    @Test(dataProvider = "getUser", dependsOnMethods = {"createPostTest"})
+    private String getCurrentDateTime() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        return dtf.format(now);
+    }
+
+    @Test(dataProvider = "getUser", dependsOnMethods = {"createPostTest", "editPostTest"})
     public void deletePostTest(String username, String password, String userId) throws InterruptedException {
         WebDriver webDriver = super.getWebDriver();
         LoginPage loginPage = new LoginPage(webDriver);
@@ -254,24 +271,24 @@ public class SkilloSiteTests extends TestObject {
         //Get the number of posts prior deleting the latest one after scrolling to the bottom of the page
         profilePage.scrollDownToBottom();
         int numberOfPosts = postsContainer.getPostsCount();
-        if (numberOfPosts > 0) {
-            WebElement latestPost = postsContainer.getLastPost();
-            latestPost.click();
-            postEntityDetails.deletePost();
+        //Proceed to the next steps only if there is at least one post
+        Assert.assertTrue(numberOfPosts > 0, "No post is available to delete!");
 
-            String actualAlertMessage = toastContainer.getAlertMessageText();
-            Assert.assertEquals(actualAlertMessage, "Post Deleted!",
-                    "The actual message text is not matching the expected text");
-            Assert.assertTrue(profilePage.isPageLoadedForUser(userId),
-                    "Current page in not profile page for " + userId + " user");
 
-            profilePage.scrollDownToBottom();
-            int numberOfPostsAfterDeletion = postsContainer.getPostsCount();
-            //Check if the number of posts after deletion is less with one than the posts before deletion
-            Assert.assertEquals(numberOfPostsAfterDeletion, numberOfPosts - 1);
-        } else {
-            System.out.println("No posts are available, nothing will be deleted");
-        }
+        postsContainer.clickOnLastPost();
+
+        postEntityDetails.postInfoContainer.clickDeletePostBtn();
+
+        String actualAlertMessage = toastContainer.getAlertMessageText();
+        Assert.assertEquals(actualAlertMessage, "Post Deleted!",
+                "The actual message text is not matching the expected text");
+        Assert.assertTrue(profilePage.isPageLoadedForUser(userId),
+                "Current page in not profile page for " + userId + " user");
+
+        profilePage.scrollDownToBottom();
+        int numberOfPostsAfterDeletion = postsContainer.getPostsCount();
+        //Check if the number of posts after deletion is with one less than the posts before deletion
+        Assert.assertEquals(numberOfPostsAfterDeletion, numberOfPosts - 1);
     }
 
     @Test(dataProvider = "getInvalidUserCredentials")

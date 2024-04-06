@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -23,7 +24,15 @@ public class PostsContainer {
         PageFactory.initElements(webDriver, this);
     }
 
-    public WebElement getFirstPost() {
+    public void clickOnFirstPost() {
+        getFirstPost().click();
+    }
+
+    public void clickOnLastPost() {
+        getLastPost().click();
+    }
+
+    private WebElement getFirstPost() {
         if (!posts.isEmpty()) {
             return posts.getFirst();
         } else {
@@ -38,7 +47,7 @@ public class PostsContainer {
         }
     }
 
-    public WebElement getNthPost(int index) {
+    private WebElement getNthPost(int index) {
         if ((!posts.isEmpty()) && (index > -1) && (index < posts.size())) {
             return posts.get(index);
         } else {

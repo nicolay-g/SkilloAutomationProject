@@ -1,5 +1,6 @@
 package factory;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,7 +17,9 @@ public class PostComments {
     private final WebDriverWait wait;
     @FindBy(xpath = "//fieldset//input[@formcontrolname='content']")
     private WebElement commentInput;
-    @FindBy(xpath = "//app-comment")
+    @FindBy(xpath = "//div[@class='comment-list-container']")
+    private WebElement commentsContainer;
+    @FindBy(xpath = "//div[@class='col-12 comment-content']")
     private List<WebElement> postComments;
     public PostComments(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -25,36 +28,43 @@ public class PostComments {
         PageFactory.initElements(webDriver, this);
     }
 
-    public void addPostComment(String message) {
+    public void addComment(String message) {
         wait.until(ExpectedConditions.visibilityOf(commentInput));
         commentInput.sendKeys(message);
         commentInput.sendKeys(Keys.ENTER);
     }
 
-    public WebElement getFirstPostComment() {
+    public String getFirstComment() {
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='comment-list-container']")));
         if (!postComments.isEmpty()) {
-            return postComments.getFirst();
+            for (WebElement postComment : postComments) {
+                System.out.println(postComment.getText());
+            }
+            return postComments.getFirst().getText();
         } else {
             return null;
         }
     }
-    public WebElement getLastPostComment() {
+    public String getLastComment() {
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='comment-list-container']")));
         if (!postComments.isEmpty()) {
-            return postComments.getLast();
+            return postComments.getLast().getText();
         } else {
             return null;
         }
     }
 
-    public WebElement getNthPostComment(int index) {
+    public String getNthComment(int index) {
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='comment-list-container']")));
         if ((!postComments.isEmpty()) && (index > -1) && (index < postComments.size())) {
-            return postComments.get(index);
+            return postComments.get(index).getText();
         } else {
             return null;
         }
     }
 
     public int getPostCommentsCount() {
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='comment-list-container']")));
         return (!postComments.isEmpty()) ? postComments.size() : 0;
     }
 }
