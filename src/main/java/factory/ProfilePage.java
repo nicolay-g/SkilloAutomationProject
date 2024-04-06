@@ -68,13 +68,13 @@ public class ProfilePage {
     public void scrollDownToBottom() throws InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
 
-        int postsCountBeforeScrolling = posts.getNumberOfPosts();
+        int postsCountBeforeScrolling = posts.getPostsCount();
         int postsCountAfterScrolling;
         boolean allPostsLoaded;
         do {
             js.executeScript("window.scrollBy(0,2000)", "");
             Thread.sleep(5000);
-            postsCountAfterScrolling = posts.getNumberOfPosts();
+            postsCountAfterScrolling = posts.getPostsCount();
 
             if (postsCountAfterScrolling > postsCountBeforeScrolling) {
                 postsCountBeforeScrolling = postsCountAfterScrolling;

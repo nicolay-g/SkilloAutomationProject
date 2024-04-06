@@ -13,11 +13,11 @@ public class PostInfoContainer {
     private final WebDriver webDriver;
     private final WebDriverWait wait;
     @FindBy(xpath = "//label[@class='delete-ask']")
-    WebElement deletePost;
+    private WebElement deletePost;
     @FindBy(xpath = "//button[text()='Yes']")
-    WebElement deletePostYesButton;
+    private WebElement deletePostYesButton;
     @FindBy(xpath = "//button[text()='No']")
-    WebElement deletePostNoButton;
+    private WebElement deletePostNoButton;
 
     public PostInfoContainer(WebDriver webDriver) {
         this.webDriver = webDriver;

@@ -14,7 +14,7 @@ public class PostsContainer {
     private final WebDriverWait wait;
 
     @FindBy(xpath = "//div[@class='container']//app-post")
-    List<WebElement> posts;
+    private List<WebElement> posts;
 
     public PostsContainer(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -46,7 +46,7 @@ public class PostsContainer {
         }
     }
 
-    public int getNumberOfPosts() {
+    public int getPostsCount() {
         return (!posts.isEmpty()) ? posts.size() : 0;
     }
 }

@@ -182,19 +182,17 @@ public class SkilloSiteTests extends TestObject {
     }
 
     //@Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
-    public void editPostTest(String username, String password, String userId){
+    @Test(dataProvider = "getUser")
+    public void editPostTest(String username, String password, String userId) throws InterruptedException {
         Assert.assertTrue(true);
-    }
 
-    @Test(dataProvider = "getUser", dependsOnMethods = {"createPostTest"})
-    public void deletePostTest(String username, String password, String userId) throws InterruptedException {
         WebDriver webDriver = super.getWebDriver();
         LoginPage loginPage = new LoginPage(webDriver);
         HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
         HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
         HomePage homePage = new HomePage(webDriver);
         PostsContainer postsContainer = new PostsContainer(webDriver);
-        PostInfoContainer postInfoContainer = new PostInfoContainer(webDriver);
+        PostEntityDetails postEntityDetails = new PostEntityDetails(webDriver);
         ToastContainer toastContainer = new ToastContainer(webDriver);
         ProfilePage profilePage = new ProfilePage(webDriver);
 
@@ -212,11 +210,54 @@ public class SkilloSiteTests extends TestObject {
 
         //Get the number of posts prior deleting the latest one after scrolling to the bottom of the page
         profilePage.scrollDownToBottom();
-        int numberOfPosts = postsContainer.getNumberOfPosts();
+        int numberOfPosts = postsContainer.getPostsCount();
         if (numberOfPosts > 0) {
             WebElement latestPost = postsContainer.getLastPost();
             latestPost.click();
-            postInfoContainer.clickDeletePostBtn();
+            postEntityDetails.addPostComment("Hello world!");
+
+            //TODO: Implement wait until the list of comments gets refreshed and then validate!!!!!
+            //Assert.assertEquals(postEntityDetails.getPostLatestCommentText(), "Hello world!");
+
+            //...
+
+        } else {
+            System.out.println("No posts are available, nothing will be deleted");
+        }
+
+    }
+
+    @Test(dataProvider = "getUser", dependsOnMethods = {"createPostTest"})
+    public void deletePostTest(String username, String password, String userId) throws InterruptedException {
+        WebDriver webDriver = super.getWebDriver();
+        LoginPage loginPage = new LoginPage(webDriver);
+        HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
+        HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
+        HomePage homePage = new HomePage(webDriver);
+        PostsContainer postsContainer = new PostsContainer(webDriver);
+        PostEntityDetails postEntityDetails = new PostEntityDetails(webDriver);
+        ToastContainer toastContainer = new ToastContainer(webDriver);
+        ProfilePage profilePage = new ProfilePage(webDriver);
+
+        headerLoggedOut.clickOnLoginLink();
+        Assert.assertTrue(loginPage.isPageLoaded(), "The login page is not opened");
+
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
+        loginPage.clickOnSignInButton();
+        Assert.assertTrue(homePage.isPageLoaded(), "The home page is not opened");
+
+        headerLoggedIn.clickOnProfileLink();
+        Assert.assertTrue(profilePage.isPageLoadedForUser(userId),
+                "Current page in not profile page for " + userId + " user");
+
+        //Get the number of posts prior deleting the latest one after scrolling to the bottom of the page
+        profilePage.scrollDownToBottom();
+        int numberOfPosts = postsContainer.getPostsCount();
+        if (numberOfPosts > 0) {
+            WebElement latestPost = postsContainer.getLastPost();
+            latestPost.click();
+            postEntityDetails.deletePost();
 
             String actualAlertMessage = toastContainer.getAlertMessageText();
             Assert.assertEquals(actualAlertMessage, "Post Deleted!",
@@ -225,7 +266,7 @@ public class SkilloSiteTests extends TestObject {
                     "Current page in not profile page for " + userId + " user");
 
             profilePage.scrollDownToBottom();
-            int numberOfPostsAfterDeletion = postsContainer.getNumberOfPosts();
+            int numberOfPostsAfterDeletion = postsContainer.getPostsCount();
             //Check if the number of posts after deletion is less with one than the posts before deletion
             Assert.assertEquals(numberOfPostsAfterDeletion, numberOfPosts - 1);
         } else {
