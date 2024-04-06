@@ -1,6 +1,5 @@
 package factory;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,12 +9,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.List;
 
 public class ProfilePage {
-    private WebDriver webDriver;
+    private final WebDriver webDriver;
 
-    private WebDriverWait wait;
+    private final WebDriverWait wait;
 
     public static final String PROFILE_PAGE_BASE_URL = "http://training.skillo-bg.com:4200/users/";
 
@@ -30,11 +28,11 @@ public class ProfilePage {
     @FindBy(xpath = "//app-spinner")
     private WebElement appSpinner;
 
-    private ToastContainer toastContainer;
+    private final ToastContainer toastContainer;
 
-    private ModifyProfileDlg modifyProfileDlg;
+    private final ModifyProfileDlg modifyProfileDlg;
 
-    private PostsContainer posts;
+    private final PostsContainer posts;
 
 
     public ProfilePage(WebDriver webDriver) {
@@ -71,8 +69,8 @@ public class ProfilePage {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
 
         int postsCountBeforeScrolling = posts.getNumberOfPosts();
-        int postsCountAfterScrolling = postsCountBeforeScrolling;
-        boolean allPostsLoaded = false;
+        int postsCountAfterScrolling;
+        boolean allPostsLoaded;
         do {
             js.executeScript("window.scrollBy(0,2000)", "");
             Thread.sleep(5000);

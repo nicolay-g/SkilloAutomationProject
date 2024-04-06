@@ -84,6 +84,36 @@ public class SkilloSiteTests extends TestObject {
     }
 
     @Test(dataProvider = "getUserDetails")
+    public void updateUserProfileTest(String username, String password, String userProfileName) {
+        WebDriver webDriver = super.getWebDriver();
+        LoginPage loginPage = new LoginPage(webDriver);
+        HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
+        HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
+        ProfilePage profilePage = new ProfilePage(webDriver);
+        SoftAssert softAssert = new SoftAssert();
+
+        headerLoggedOut.clickOnLoginLink();
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
+        loginPage.clickOnSignInButton();
+
+        headerLoggedIn.clickOnProfileLink();
+
+        //Generate a random integer number in the range [0-1000] that will be used as part of the public info
+        Random random = new Random();
+        String expectedPublicInfo = "Public - " + random.nextInt(1001);
+        profilePage.modifyProfilePublicInfo(expectedPublicInfo);
+        String actualProfilePublicInfo = profilePage.getProfilePublicInfo();
+
+        //Validate that the profile details contain both the user profile name and the public info
+        softAssert.assertTrue(actualProfilePublicInfo.contains(userProfileName),
+                "Profile public info does not contain profile name: " + userProfileName);
+        softAssert.assertTrue(actualProfilePublicInfo.contains(expectedPublicInfo),
+                "Profile public info does not contain " + expectedPublicInfo);
+        softAssert.assertAll();
+    }
+
+    @Test(dataProvider = "getUserDetails")
     public void searchTest(String username, String password, String userProfileName){
         WebDriver webDriver = super.getWebDriver();
         LoginPage loginPage = new LoginPage(webDriver);
@@ -196,41 +226,11 @@ public class SkilloSiteTests extends TestObject {
 
             profilePage.scrollDownToBottom();
             int numberOfPostsAfterDeletion = postsContainer.getNumberOfPosts();
-            //Check if the number of posts prior deletion equals the number of posts after deletion + 1
+            //Check if the number of posts after deletion is less with one than the posts before deletion
             Assert.assertEquals(numberOfPostsAfterDeletion, numberOfPosts - 1);
         } else {
             System.out.println("No posts are available, nothing will be deleted");
         }
-    }
-
-    @Test(dataProvider = "getUserDetails")
-    public void updateUserProfileTest(String username, String password, String userProfileName) {
-        WebDriver webDriver = super.getWebDriver();
-        LoginPage loginPage = new LoginPage(webDriver);
-        HeaderLoggedOut headerLoggedOut = new HeaderLoggedOut(webDriver);
-        HeaderLoggedIn headerLoggedIn = new HeaderLoggedIn(webDriver);
-        ProfilePage profilePage = new ProfilePage(webDriver);
-        SoftAssert softAssert = new SoftAssert();
-
-        headerLoggedOut.clickOnLoginLink();
-        loginPage.setUsername(username);
-        loginPage.setPassword(password);
-        loginPage.clickOnSignInButton();
-
-        headerLoggedIn.clickOnProfileLink();
-
-        //Generate a random integer number in the range [0-1000] that will be used as part of the public info
-        Random random = new Random();
-        String expectedPublicInfo = "Public - " + random.nextInt(1001);
-        profilePage.modifyProfilePublicInfo(expectedPublicInfo);
-        String actualProfilePublicInfo = profilePage.getProfilePublicInfo();
-
-        //Validate that the profile details contain both the user profile name and the public info
-        softAssert.assertTrue(actualProfilePublicInfo.contains(userProfileName),
-                "Profile public info does not contain profile name: " + userProfileName);
-        softAssert.assertTrue(actualProfilePublicInfo.contains(expectedPublicInfo),
-                "Profile public info does not contain " + expectedPublicInfo);
-        softAssert.assertAll();
     }
 
     @Test(dataProvider = "getInvalidUserCredentials")
