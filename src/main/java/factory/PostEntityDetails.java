@@ -33,29 +33,6 @@ public class PostEntityDetails {
         postInfoContainer.clickDeletePostBtn();
     }
 
-    /*
-    public void addPostComment(String message) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        System.out.println(dtf.format(now));
-
-        postComments.addPostComment(message);
-    }
-
-    public String getPostLastCommentText() {
-        WebElement postLastComment = postComments.getPostLastComment();
-        String commentContent = postLastComment.getText();
-                //findElement(By.xpath("//div[@class='col-12 comment-content']")).getText();
-        return commentContent;
-    }
-
-    public String getPostFirstCommentText() {
-        WebElement postFirstComment = postComments.getPostFirstComment();
-        String commentContent = postFirstComment.
-                findElement(By.xpath("//div[@class='col-12 comment-content']")).getText();
-        return commentContent;
-    }
-*/
     public void closePostDetailsDialog() {
         WebElement commentInput = postEntityDetailsDialog.findElement(By.
                 xpath("//fieldset//input[@formcontrolname='content']"));

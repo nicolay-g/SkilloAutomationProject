@@ -1,18 +1,14 @@
 package ui_tests;
 
 import factory.*;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.io.File;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -148,7 +144,6 @@ public class SkilloSiteTests extends TestObject {
                 "Search results count is not 2! Actual results count is " + searchResultsItems);
         for (WebElement item : searchResults) {
             String itemText = item.getText();
-            System.out.println(itemText);
             softAssert.assertTrue(itemText.contains(searchText), "Incorrect search results");
         }
         softAssert.assertAll();
@@ -187,8 +182,8 @@ public class SkilloSiteTests extends TestObject {
                 "Current page in not profile page for " + userId + " user");
     }
 
-    //@Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
     @Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
+    //@Test(dataProvider = "getUser")
     public void editPostTest(String username, String password, String userId) throws InterruptedException {
         Assert.assertTrue(true);
 
@@ -231,10 +226,10 @@ public class SkilloSiteTests extends TestObject {
 
         postsContainer.clickOnLastPost();
 
-        softAssert.assertEquals(post.postComments.getLastComment(), postCommentText,
-                "Wrong text for the last post comment");
         softAssert.assertEquals(post.postComments.getPostCommentsCount(), expectedPostCommentsCount + 1,
                 "Wrong post comments count");
+        softAssert.assertEquals(post.postComments.getLastComment(), postCommentText,
+                "Wrong text for the last post comment");
         softAssert.assertAll();
     }
 
@@ -273,7 +268,6 @@ public class SkilloSiteTests extends TestObject {
         int numberOfPosts = postsContainer.getPostsCount();
         //Proceed to the next steps only if there is at least one post
         Assert.assertTrue(numberOfPosts > 0, "No post is available to delete!");
-
 
         postsContainer.clickOnLastPost();
 

@@ -15,6 +15,7 @@ import java.util.List;
 public class PostComments {
     private final WebDriver webDriver;
     private final WebDriverWait wait;
+    private final String commentsListLocator = "//app-comment-list";
     @FindBy(xpath = "//fieldset//input[@formcontrolname='content']")
     private WebElement commentInput;
     @FindBy(xpath = "//div[@class='comment-list-container']")
@@ -35,27 +36,36 @@ public class PostComments {
     }
 
     public String getFirstComment() {
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='comment-list-container']")));
+        wait.until(ExpectedConditions.elementToBeClickable(commentsContainer));
         if (!postComments.isEmpty()) {
-            for (WebElement postComment : postComments) {
-                System.out.println(postComment.getText());
-            }
             return postComments.getFirst().getText();
         } else {
             return null;
         }
     }
     public String getLastComment() {
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='comment-list-container']")));
-        if (!postComments.isEmpty()) {
-            return postComments.getLast().getText();
+        /*
+        wait.until(ExpectedConditions.elementToBeClickable(commentsContainer));
+
+
         } else {
             return null;
         }
+        */
+
+        wait.until(ExpectedConditions.elementToBeClickable(commentsContainer));
+        boolean commentListExists = (commentsContainer.findElements(By.
+                xpath(commentsListLocator))).size() == 1;
+        if (commentListExists) {
+            if (!postComments.isEmpty()) {
+                return postComments.getLast().getText();
+            }
+        }
+        return null;
     }
 
     public String getNthComment(int index) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='comment-list-container']")));
+        wait.until(ExpectedConditions.elementToBeClickable(commentsContainer));
         if ((!postComments.isEmpty()) && (index > -1) && (index < postComments.size())) {
             return postComments.get(index).getText();
         } else {
@@ -64,7 +74,13 @@ public class PostComments {
     }
 
     public int getPostCommentsCount() {
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='comment-list-container']")));
-        return (!postComments.isEmpty()) ? postComments.size() : 0;
+        wait.until(ExpectedConditions.elementToBeClickable(commentsContainer));
+        boolean commentListExists = (commentsContainer.findElements(By.
+                xpath(commentsListLocator))).size() == 1;
+        if (commentListExists) {
+            return postComments.size();
+        } else {
+            return -1;
+        }
     }
 }
