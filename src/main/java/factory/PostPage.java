@@ -1,6 +1,5 @@
 package factory;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,8 +12,8 @@ import java.time.Duration;
 
 public class PostPage {
     private static final String NEW_POST_PAGE_BASE_URL = "http://training.skillo-bg.com:4200/posts/create";
-    private WebDriver webDriver;
-    private WebDriverWait wait;
+    private final WebDriver webDriver;
+    private final WebDriverWait wait;
     @FindBy(xpath = "//input[contains(@class,'file')]")
     private WebElement uploadFileInput;
     @FindBy(xpath = "//input[@class='form-control input-lg']")
@@ -41,7 +40,7 @@ public class PostPage {
 
     public boolean isFileUploaded(String picFileName) {
         wait.until(ExpectedConditions.visibilityOf(uploadedFileName));
-        return (picFileName.equals(uploadedFileName.getAttribute("placeholder"))) ? true : false;
+        return picFileName.equals(uploadedFileName.getAttribute("placeholder"));
     }
 
     public void setPostCaption(String text) {

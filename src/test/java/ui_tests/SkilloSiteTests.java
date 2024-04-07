@@ -183,7 +183,6 @@ public class SkilloSiteTests extends TestObject {
     }
 
     @Test(dataProvider = "getUser", dependsOnMethods = "createPostTest")
-    //@Test(dataProvider = "getUser")
     public void editPostTest(String username, String password, String userId) throws InterruptedException {
         Assert.assertTrue(true);
 
@@ -218,7 +217,7 @@ public class SkilloSiteTests extends TestObject {
         postsContainer.clickOnLastPost();
 
         String postCommentText = "It's " + getCurrentDateTime();
-        int expectedPostCommentsCount = post.postComments.getPostCommentsCount();
+        int expectedPostCommentsCount = post.postComments.getPostCommentsCount() + 1;
 
         post.postComments.addComment(postCommentText);
 
@@ -228,9 +227,10 @@ public class SkilloSiteTests extends TestObject {
 
         int actualPostCommentsCount = post.postComments.getPostCommentsCount();
         String actualPostCommentText = post.postComments.getLastComment();
-        softAssert.assertEquals(actualPostCommentsCount, expectedPostCommentsCount + 1,
+        softAssert.assertEquals(actualPostCommentsCount, expectedPostCommentsCount,
                 "Wrong post comments count. Expected: " + (expectedPostCommentsCount + 1) + " . Actual: " +
                 actualPostCommentsCount);
+        System.out.println("Expected: " + expectedPostCommentsCount + " Actual: " + actualPostCommentsCount);
         softAssert.assertEquals(actualPostCommentText, postCommentText,
                 "Wrong text for the last post comment. Expected: '" + postCommentText + "'" +
                 " Actual: '" + actualPostCommentText + "'");

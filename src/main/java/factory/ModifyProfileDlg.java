@@ -10,8 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class ModifyProfileDlg {
-    private WebDriver webDriver;
-    private WebDriverWait wait;
+    private final WebDriver webDriver;
+    private final WebDriverWait wait;
     @FindBy(xpath = "//textarea[@formcontrolname='publicInfo']")
     private WebElement publicInfoInput;
     @FindBy(xpath = "//button[@type='submit']")

@@ -12,9 +12,9 @@ import java.time.Duration;
 
 public class LoginPage extends AuthForm {
 
-    private WebDriver webDriver;
+    private final WebDriver webDriver;
 
-    private WebDriverWait wait;
+    private final WebDriverWait wait;
 
     public static final String LOGIN_PAGE_URL = "http://training.skillo-bg.com:4200/users/login";
 

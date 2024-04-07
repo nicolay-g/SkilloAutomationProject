@@ -7,8 +7,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class HomePage {
-    private WebDriver webDriver;
-    private WebDriverWait wait;
+    private final WebDriver webDriver;
+    private final WebDriverWait wait;
     private static final String HOME_PAGE_URL = "http://training.skillo-bg.com:4200/posts/all";
 
     public HomePage(WebDriver webDriver) {
