@@ -226,10 +226,14 @@ public class SkilloSiteTests extends TestObject {
 
         postsContainer.clickOnLastPost();
 
-        softAssert.assertEquals(post.postComments.getPostCommentsCount(), expectedPostCommentsCount + 1,
-                "Wrong post comments count");
-        softAssert.assertEquals(post.postComments.getLastComment(), postCommentText,
-                "Wrong text for the last post comment");
+        int actualPostCommentsCount = post.postComments.getPostCommentsCount();
+        String actualPostCommentText = post.postComments.getLastComment();
+        softAssert.assertEquals(actualPostCommentsCount, expectedPostCommentsCount + 1,
+                "Wrong post comments count. Expected: " + (expectedPostCommentsCount + 1) + " . Actual: " +
+                actualPostCommentsCount);
+        softAssert.assertEquals(actualPostCommentText, postCommentText,
+                "Wrong text for the last post comment. Expected: '" + postCommentText + "'" +
+                " Actual: '" + actualPostCommentText + "'");
         softAssert.assertAll();
     }
 
