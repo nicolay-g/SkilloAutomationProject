@@ -19,6 +19,8 @@ public class PostComments {
     private WebElement commentInput;
     @FindBy(xpath = "//div[@class='comment-list-container']")
     private WebElement commentsContainer;
+    @FindBy(xpath = "//app-comment-list")
+    private WebElement commentsList;
     @FindBy(xpath = "//div[@class='col-12 comment-content']")
     private List<WebElement> postComments;
     private final String commentLocator = "//app-comment";
@@ -30,7 +32,6 @@ public class PostComments {
     }
 
     public void addComment(String message) {
-        wait.until(ExpectedConditions.visibilityOf(commentInput));
         wait.until(ExpectedConditions.elementToBeClickable(commentInput));
         commentInput.sendKeys(message);
         commentInput.sendKeys(Keys.ENTER);
@@ -68,12 +69,10 @@ public class PostComments {
     }
 
     public void waitForPostCommentsLoading() throws InterruptedException {
-        wait.until(ExpectedConditions.visibilityOf(commentsContainer));
-
         int retries = 1;
         do {
-            Thread.sleep(1000);
-            List<WebElement> comments = commentsContainer.findElements(By.xpath(commentLocator));
+            Thread.sleep(500);
+            List<WebElement> comments = commentsList.findElements(By.xpath(commentLocator));
             if (!comments.isEmpty()) {
                 break;
             }

@@ -1,5 +1,6 @@
 package factory;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class ProfilePage {
     private final WebDriver webDriver;
@@ -27,6 +29,8 @@ public class ProfilePage {
     private WebElement toastContainerElement;
     @FindBy(xpath = "//app-spinner")
     private WebElement appSpinner;
+
+    By spinnerIndicatorLocator = By.xpath("//app-spinner");
 
     private final ToastContainer toastContainer;
 
@@ -66,6 +70,41 @@ public class ProfilePage {
     }
 
     public void scrollDownToBottom() throws InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+
+        boolean isBottomOfPageReached = false;
+        do {
+            js.executeScript("window.scrollBy(0,2000)", "");
+
+            boolean isIndicatorVisible = isIndicatorVisible();
+
+            if (isIndicatorVisible) {
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(spinnerIndicatorLocator));
+            } else {
+                isBottomOfPageReached = true;
+            }
+        } while (!isBottomOfPageReached);
+    }
+
+    private boolean isIndicatorVisible() {
+        int retries = 1;
+        boolean visibility = false;
+        WebDriverWait w = new WebDriverWait(webDriver, Duration.ofMillis(100));
+        do {
+            try {
+                    w.until(ExpectedConditions.visibilityOfElementLocated(spinnerIndicatorLocator));
+                    visibility = true;
+                    break;
+                } catch (Exception e) {
+                retries++;
+            }
+
+        } while (retries < 6);
+
+        return visibility;
+    }
+
+    public void scrollDownToBottom__() throws InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
 
         int postsCountBeforeScrolling = posts.getPostsCount();
