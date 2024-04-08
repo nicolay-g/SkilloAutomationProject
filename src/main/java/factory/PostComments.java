@@ -31,6 +31,7 @@ public class PostComments {
 
     public void addComment(String message) {
         wait.until(ExpectedConditions.visibilityOf(commentInput));
+        wait.until(ExpectedConditions.elementToBeClickable(commentInput));
         commentInput.sendKeys(message);
         commentInput.sendKeys(Keys.ENTER);
     }

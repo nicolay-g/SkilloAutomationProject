@@ -34,7 +34,7 @@ public class SkilloSiteTests extends TestObject {
         File postPicture = new File(UPLOAD_DIR + "CtLeeQc1C.jpg");
         String postCaption = "Test post";
         return new Object[][]{
-                {"n@g.co","n@g.con", "5631", postPicture, postCaption},
+                {"n@g.con","n@g.con", "5631", postPicture, postCaption},
         };
     }
 
