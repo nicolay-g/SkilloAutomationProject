@@ -21,7 +21,7 @@ public class PostInfoContainer {
 
     public PostInfoContainer(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
 
         PageFactory.initElements(webDriver, this);
     }

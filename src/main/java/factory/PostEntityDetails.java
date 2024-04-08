@@ -20,7 +20,7 @@ public class PostEntityDetails {
     private WebElement postEntityDetailsDialog;
     public PostEntityDetails(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
         this.postInfoContainer = new PostInfoContainer(this.webDriver);
         this.postComments = new PostComments(this.webDriver);
 

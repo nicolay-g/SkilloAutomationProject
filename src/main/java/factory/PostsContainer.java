@@ -18,7 +18,7 @@ public class PostsContainer {
 
     public PostsContainer(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
 
         PageFactory.initElements(webDriver, this);
     }

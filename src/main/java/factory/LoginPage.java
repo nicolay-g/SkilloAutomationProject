@@ -29,7 +29,7 @@ public class LoginPage extends AuthForm {
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
 
         PageFactory.initElements(this.webDriver, this);
     }

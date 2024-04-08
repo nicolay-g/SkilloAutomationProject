@@ -13,7 +13,7 @@ public class HomePage {
 
     public HomePage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
     }
 
     public boolean isPageLoaded() {

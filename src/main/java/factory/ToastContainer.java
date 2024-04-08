@@ -19,7 +19,7 @@ public class ToastContainer {
     private WebElement alertDialog;
     public ToastContainer(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(webDriver, Duration.ofSeconds(20));
 
         PageFactory.initElements(webDriver, this);
     }

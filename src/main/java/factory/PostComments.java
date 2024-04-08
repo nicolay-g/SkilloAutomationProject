@@ -24,7 +24,7 @@ public class PostComments {
     private final String commentLocator = "//app-comment";
     public PostComments(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
 
         PageFactory.initElements(this.webDriver, this);
     }

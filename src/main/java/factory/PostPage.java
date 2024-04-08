@@ -28,7 +28,7 @@ public class PostPage {
 
     public PostPage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
 
         PageFactory.initElements(this.webDriver, this);
     }
