@@ -72,12 +72,12 @@ public class PostComments {
 
         int retries = 1;
         do {
-            Thread.sleep(500);
+            Thread.sleep(1000);
             List<WebElement> comments = commentsContainer.findElements(By.xpath(commentLocator));
             if (!comments.isEmpty()) {
                 break;
             }
             retries++;
-        } while (retries < 10);
+        } while (retries < 6);
     }
 }
