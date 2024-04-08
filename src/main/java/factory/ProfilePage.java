@@ -37,7 +37,7 @@ public class ProfilePage {
 
     public ProfilePage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
         this.modifyProfileDlg = new ModifyProfileDlg(this.webDriver);
         this.toastContainer = new ToastContainer(this.webDriver);
         this.posts = new PostsContainer(this.webDriver);

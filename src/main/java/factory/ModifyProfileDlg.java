@@ -21,7 +21,7 @@ public class ModifyProfileDlg {
 
     public ModifyProfileDlg(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
 
         PageFactory.initElements(this.webDriver, this);
     }

@@ -29,7 +29,7 @@ public class LoginPage extends AuthForm {
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
 
         PageFactory.initElements(this.webDriver, this);
     }
@@ -59,6 +59,7 @@ public class LoginPage extends AuthForm {
 
     public void clickOnSignInButton() {
         wait.until(ExpectedConditions.visibilityOf(signInButton));
+        wait.until(ExpectedConditions.elementToBeClickable(signInButton));
         signInButton.click();
     }
 

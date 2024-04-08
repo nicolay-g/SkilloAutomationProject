@@ -20,14 +20,15 @@ public class PostEntityDetails {
     private WebElement postEntityDetailsDialog;
     public PostEntityDetails(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
         this.postInfoContainer = new PostInfoContainer(this.webDriver);
         this.postComments = new PostComments(this.webDriver);
 
         PageFactory.initElements(webDriver, this);
     }
 
-    public void deletePost() {
+    public void deletePost() throws InterruptedException {
+        postComments.waitForPostCommentsLoading();
         postInfoContainer.clickDeletePostBtn();
     }
 

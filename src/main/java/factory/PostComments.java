@@ -24,7 +24,7 @@ public class PostComments {
     private final String commentLocator = "//app-comment";
     public PostComments(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(20));
+        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
 
         PageFactory.initElements(this.webDriver, this);
     }
@@ -66,12 +66,12 @@ public class PostComments {
         return postComments.size();
     }
 
-    private void waitForPostCommentsLoading() throws InterruptedException {
+    public void waitForPostCommentsLoading() throws InterruptedException {
         wait.until(ExpectedConditions.visibilityOf(commentsContainer));
 
         int retries = 1;
         do {
-            Thread.sleep(300);
+            Thread.sleep(500);
             List<WebElement> comments = commentsContainer.findElements(By.xpath(commentLocator));
             if (!comments.isEmpty()) {
                 break;
