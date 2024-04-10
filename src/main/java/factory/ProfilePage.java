@@ -96,24 +96,4 @@ public class ProfilePage extends PageObject {
 
         return visibility;
     }
-
-    public void scrollDownToBottom__() throws InterruptedException {
-        JavascriptExecutor js = (JavascriptExecutor) webDriver;
-
-        int postsCountBeforeScrolling = posts.getPostsCount();
-        int postsCountAfterScrolling;
-        boolean allPostsLoaded;
-        do {
-            js.executeScript("window.scrollBy(0,2000)", "");
-            Thread.sleep(5000);
-            postsCountAfterScrolling = posts.getPostsCount();
-
-            if (postsCountAfterScrolling > postsCountBeforeScrolling) {
-                postsCountBeforeScrolling = postsCountAfterScrolling;
-                allPostsLoaded = false;
-            } else {
-                allPostsLoaded = true;
-            }
-        } while (!allPostsLoaded);
-    }
 }

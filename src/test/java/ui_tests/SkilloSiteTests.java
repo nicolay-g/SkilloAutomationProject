@@ -1,6 +1,8 @@
 package ui_tests;
 
 import factory.*;
+import helpers.DateUtilities;
+import helpers.NumbersUtilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -9,8 +11,6 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
@@ -102,8 +102,7 @@ public class SkilloSiteTests extends TestObject {
         headerLoggedIn.clickOnProfileLink();
 
         //Generate a random integer number in the range [0-1000] that will be used as part of the public info
-        Random random = new Random();
-        String expectedPublicInfo = "Public - " + random.nextInt(1001);
+        String expectedPublicInfo = "Public - " + NumbersUtilities.generateRandomPositiveNumber(1001);
         profilePage.modifyProfilePublicInfo(expectedPublicInfo);
         String actualProfilePublicInfo = profilePage.getProfilePublicInfo();
 
@@ -216,7 +215,7 @@ public class SkilloSiteTests extends TestObject {
 
         postsContainer.clickOnLastPost();
 
-        String postCommentText = "It's " + getCurrentDateTime();
+        String postCommentText = "It's " + DateUtilities.getCurrentDateTime();
         int expectedPostCommentsCount = post.postComments.getPostCommentsCount() + 1;
 
         post.postComments.addComment(postCommentText);
@@ -235,12 +234,6 @@ public class SkilloSiteTests extends TestObject {
                 "Wrong text for the last post comment. Expected: '" + postCommentText + "'" +
                 " Actual: '" + actualPostCommentText + "'");
         softAssert.assertAll();
-    }
-
-    private String getCurrentDateTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        return dtf.format(now);
     }
 
     @Test(dataProvider = "getUser", dependsOnMethods = {"createPostTest", "editPostTest"})
