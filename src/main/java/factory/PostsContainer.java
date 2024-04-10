@@ -1,26 +1,18 @@
 package factory;
 
+import abstraction.PageObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 
-public class PostsContainer {
-    private final WebDriver webDriver;
-    private final WebDriverWait wait;
-
+public class PostsContainer extends PageObject {
     @FindBy(xpath = "//div[@class='container']//app-post")
     private List<WebElement> posts;
 
     public PostsContainer(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
-
-        PageFactory.initElements(webDriver, this);
+        super(webDriver);
     }
 
     public void clickOnFirstPost() {

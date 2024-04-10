@@ -4,21 +4,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
-public abstract class Header {
-
+public abstract class Header extends PageObject {
     @FindBy(id="nav-link-home")
     protected WebElement homeLink;
 
-    protected WebDriver webDriver;
-    protected WebDriverWait wait;
-
     public Header(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(300));
+        super(webDriver);
     }
 
     public void clickOnHomeLink() {

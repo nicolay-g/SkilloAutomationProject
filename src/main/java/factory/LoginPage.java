@@ -4,18 +4,10 @@ import abstraction.AuthForm;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 
 public class LoginPage extends AuthForm {
-
-    private final WebDriver webDriver;
-
-    private final WebDriverWait wait;
-
     public static final String LOGIN_PAGE_URL = "http://training.skillo-bg.com:4200/users/login";
 
     @FindBy(id = "defaultLoginFormUsername")
@@ -28,10 +20,7 @@ public class LoginPage extends AuthForm {
     private WebElement registerLink;
 
     public LoginPage(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
-
-        PageFactory.initElements(this.webDriver, this);
+        super(webDriver);
     }
 
     @Override

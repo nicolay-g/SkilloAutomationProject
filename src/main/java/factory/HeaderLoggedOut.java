@@ -4,7 +4,6 @@ import abstraction.Header;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class HeaderLoggedOut extends Header {
@@ -13,8 +12,6 @@ public class HeaderLoggedOut extends Header {
 
     public HeaderLoggedOut(WebDriver webDriver) {
         super(webDriver);
-
-        PageFactory.initElements(this.webDriver, this);
     }
 
     public void clickOnLoginLink() {

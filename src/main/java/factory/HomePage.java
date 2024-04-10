@@ -1,19 +1,15 @@
 package factory;
 
+import abstraction.PageObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 
-public class HomePage {
-    private final WebDriver webDriver;
-    private final WebDriverWait wait;
+public class HomePage extends PageObject {
     private static final String HOME_PAGE_URL = "http://training.skillo-bg.com:4200/posts/all";
 
     public HomePage(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
+        super(webDriver);
     }
 
     public boolean isPageLoaded() {

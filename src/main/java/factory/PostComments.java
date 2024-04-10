@@ -1,5 +1,6 @@
 package factory;
 
+import abstraction.PageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -12,9 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class PostComments {
-    private final WebDriver webDriver;
-    private final WebDriverWait wait;
+public class PostComments extends PageObject {
     @FindBy(xpath = "//fieldset//input[@formcontrolname='content']")
     private WebElement commentInput;
     @FindBy(xpath = "//div[@class='comment-list-container']")
@@ -25,10 +24,7 @@ public class PostComments {
     private List<WebElement> postComments;
     private final String commentLocator = "//app-comment";
     public PostComments(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
-
-        PageFactory.initElements(this.webDriver, this);
+        super(webDriver);
     }
 
     public void addComment(String message) {

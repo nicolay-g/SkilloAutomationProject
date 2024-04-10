@@ -1,22 +1,17 @@
 package factory;
 
+import abstraction.PageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.List;
 
-public class ProfilePage {
-    private final WebDriver webDriver;
-
-    private final WebDriverWait wait;
-
+public class ProfilePage extends PageObject {
     public static final String PROFILE_PAGE_BASE_URL = "http://training.skillo-bg.com:4200/users/";
 
     @FindBy(xpath = "//h2")
@@ -40,13 +35,11 @@ public class ProfilePage {
 
 
     public ProfilePage(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
+        super(webDriver);
+
         this.modifyProfileDlg = new ModifyProfileDlg(this.webDriver);
         this.toastContainer = new ToastContainer(this.webDriver);
         this.posts = new PostsContainer(this.webDriver);
-
-        PageFactory.initElements(this.webDriver, this);
     }
 
     public boolean isPageLoadedForUser(String userId) {

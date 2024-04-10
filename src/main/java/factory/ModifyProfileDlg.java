@@ -1,17 +1,13 @@
 package factory;
 
+import abstraction.PageObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 
-public class ModifyProfileDlg {
-    private final WebDriver webDriver;
-    private final WebDriverWait wait;
+public class ModifyProfileDlg extends PageObject {
     @FindBy(xpath = "//textarea[@formcontrolname='publicInfo']")
     private WebElement publicInfoInput;
     @FindBy(xpath = "//button[@type='submit']")
@@ -20,10 +16,7 @@ public class ModifyProfileDlg {
     private WebElement profileForm;
 
     public ModifyProfileDlg(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        this.wait = new WebDriverWait(this.webDriver, Duration.ofSeconds(60));
-
-        PageFactory.initElements(this.webDriver, this);
+        super(webDriver);
     }
 
     public void setPublicInfo(String publicInfo) {
