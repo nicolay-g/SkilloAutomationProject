@@ -30,7 +30,7 @@ public class HeaderLoggedIn extends Header {
     public HeaderLoggedIn(WebDriver webDriver) {
         super(webDriver);
 
-        wait = new WebDriverWait(webDriver, Duration.ofSeconds(300));
+        wait = (WebDriverWait) wait.withTimeout(Duration.ofSeconds(300));
     }
 
     public void clickOnProfileLink() {
